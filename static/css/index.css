@@ -1,0 +1,26 @@
+[v-clock]{display:none}
+      body{
+        margin: 0;
+        background-image: url('/static/img/loginBack.jpg');
+      }
+      .title{
+        margin-top: 10px;
+        margin-left: 20px;
+        font-size: 50px;
+        font-weight:600;
+      }
+      .login-card{
+        width: 25%;
+        margin-left: 60%;
+        margin-top: 5%;
+      }
+      .welcome{
+        font-size: 20px;
+        font-weight: bold;
+      }
+      .el-input{
+        margin-bottom: 5px;
+      }
+      .submit{
+        width: 50%;
+      }
