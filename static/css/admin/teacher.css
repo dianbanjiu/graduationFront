@@ -1,0 +1,31 @@
+[v-cloak]{display: none;}
+body{
+    margin: 0;
+}
+
+.el-menu-nav .logo-title{
+    margin-top: 10px;
+    font-size: 40px;
+}
+
+.nav{
+    font-size: 25px;
+}
+.el-menu .logout-userinfo{
+    float: right;
+    margin-top: 15px;
+}
+
+.el-menu-nav .nav{
+    margin-top: 15px;
+    margin-left: 50px;
+}
+
+.teachers-cards{
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 100px;
+}
+.adduserone .el-col{
+    margin-right: 5px;
+}

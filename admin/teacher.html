@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>实训管理系统</title>
+    <link rel="stylesheet" href="/static/element-ui/index.css" />
+    <link
+      rel="shortcut icon"
+      href="/static/img/favicon.ico"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="/static/css/admin/teacher.css" />
+  </head>
+
+  <body>
+    <div id="app" v-cloak>
+      <el-menu
+        :default-active="navIndex"
+        class="el-menu-nav"
+        mode="horizontal"
+        @select="navSelect"
+        background-color="#545c64"
+        text-color="#fff"
+        active-text-color="#ffd04b"
+      >
+        <el-menu-item class="logo-title" index="1">实训管理系统</el-menu-item>
+        <el-menu-item class="nav" style="margin-left: 200px;" index="2"
+          >公告</el-menu-item
+        >
+        <el-menu-item class="nav" index="3">实训管理</el-menu-item>
+        <el-menu-item class="nav" index="4">教师管理</el-menu-item>
+        <el-menu-item class="nav" index="5">学生管理</el-menu-item>
+        <el-submenu class="logout-userinfo" index="6">
+          <template slot="title"><i class="el-icon-user"></i> 欢迎您</template>
+          <el-menu-item index="6-1">个人信息</el-menu-item>
+          <el-menu-item index="6-2">退出</el-menu-item>
+        </el-submenu>
+      </el-menu>
+      <el-card class="teachers-cards">
+        <div slot="header" class="clearfix">
+          <span style="font-size: 30px;">教师信息</span>
+        </div>
+        <el-row>
+          <el-col :span="4"
+            ><el-button @click="deleteTeachers">删除教师</el-button></el-col
+          >
+          <el-col :span="15">
+            <div style="margin-bottom: 5px;">
+              <el-input
+                placeholder="请输入内容"
+                v-model="searchTeacher"
+                class="input-with-select"
+              >
+                <el-select
+                  v-model="select"
+                  slot="prepend"
+                  placeholder="请选择"
+                  style="width: 100px;"
+                >
+                  <el-option label="教师名" value="name"></el-option>
+                  <el-option label="教师ID" value="id"></el-option>
+                </el-select>
+                <el-button
+                  slot="append"
+                  icon="el-icon-search"
+                  @click="findTeacher"
+                ></el-button>
+              </el-input>
+            </div>
+          </el-col>
+          <el-col :span="4">
+            <el-dropdown style="float: right;" @command="handleCommand">
+              <el-button >
+                添加教师<i class="el-icon-arrow-down el-icon--right"></i>
+              </el-button>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="one">逐个添加</el-dropdown-item>
+                <el-dropdown-item command="much">文件导入</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </el-col>
+        </el-row>
+
+          <el-row class="adduserone" :style="adduservisible">
+            <el-col :span="3">
+                <el-input v-model="userone.id" placeholder="工号"></el-input>
+            </el-col>
+            <el-col :span="3">
+                <el-input v-model="userone.name" placeholder="姓名"></el-input>
+            </el-col>
+            <el-col :span="4">
+                <el-input v-model="userone.phone" placeholder="手机号"></el-input>
+            </el-col>
+            <el-col :span="3">
+                <el-select v-model="userone.gender" placeholder="性别">
+                    <el-option value="男">男</el-option>
+                    <el-option value="女">女</el-option>
+                </el-select>
+            </el-col>
+            <el-col :span="3">
+                <el-input v-model="userone.profession" placeholder="职务"></el-input>
+            </el-col>
+            <el-col :span="3">
+                <el-input v-model="userone.school" placeholder="单位"></el-input>
+            </el-col>
+            <el-col :span="3">
+                <el-button @click="pushuser" type="primary">添加教师</el-button>
+            </el-col>
+        </el-row>
+        <div>
+            <el-dialog
+                    title="提示"
+                    :visible.sync="dialogVisible"
+                    width="35%"
+                    >
+                <el-upload
+                        class="upload-demo"
+                        ref="upload"
+                        action="http://127.0.0.1:9091/api/admin/addUsers"
+                        :file-list="fileList"
+                        :on-success="uploadSuccess"
+                        :headers="getHeader"
+                        :auto-upload="false">
+                    <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+                    <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+                    <div slot="tip" class="el-upload__tip">只能上传xlsx文件，且不超过1MB</div>
+                </el-upload>
+            </el-dialog>
+        </div>
+        <template>
+          <el-table
+            :data="msg"
+            border
+            style="width: 100%;"
+            @selection-change="handleSelectionChange"
+          >
+            <el-table-column type="selection"></el-table-column>
+
+            <el-table-column prop="id" label="编号"> </el-table-column>
+            <el-table-column prop="name" label="姓名"> </el-table-column>
+            <el-table-column prop="gender" label="性别"></el-table-column>
+            <el-table-column prop="phone" label="电话"> </el-table-column>
+            <el-table-column prop="school" label="单位"></el-table-column>
+            <el-table-column prop="profession" label="专业"></el-table-column>
+          </el-table>
+        </template>
+        <el-pagination layout="prev, pager, next" style="text-align: center;" :total="msg.length"> </el-pagination>
+      </el-card>
+    </div>
+    <script src="/static/js/vue.min.js"></script>
+    <script src="/static/element-ui/index.js"></script>
+    <script src="/static/js/axios.min.js"></script>
+    <script src="/route.js"></script>
+    <script src="/static/js/admin/teacher.js"></script>
+  </body>
+</html>

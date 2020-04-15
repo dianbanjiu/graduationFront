@@ -1,17 +1,87 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>实训管理系统</title>
+    <link rel="stylesheet" href="/static/element-ui/index.css" />
+    <link
+      rel="shortcut icon"
+      href="/static/img/favicon.ico"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="/static/css/admin/board.css" />
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link rel="stylesheet" href="">
-    <script src=""></script>
-</head>
-
-<body>
-
-</body>
-
+  <body>
+    <div id="app" v-cloak>
+      <el-menu
+        :default-active="navIndex"
+        class="el-menu-nav"
+        mode="horizontal"
+        @select="navSelect"
+        background-color="#545c64"
+        text-color="#fff"
+        active-text-color="#ffd04b"
+      >
+        <el-menu-item class="logo-title" index="1">实训管理系统</el-menu-item>
+        <el-menu-item class="nav" style="margin-left: 200px;" index="2"
+          >公告</el-menu-item
+        >
+        <el-menu-item class="nav" index="3">实训管理</el-menu-item>
+        <el-menu-item class="nav" index="4">教师管理</el-menu-item>
+        <el-menu-item class="nav" index="5">学生管理</el-menu-item>
+        <el-submenu class="logout-userinfo" index="6">
+          <template slot="title"><i class="el-icon-user"></i> 欢迎您</template>
+          <el-menu-item index="6-1">个人信息</el-menu-item>
+          <el-menu-item index="6-2">退出</el-menu-item>
+        </el-submenu>
+      </el-menu>
+      <el-card class="boards-cards">
+        <div slot="header" class="clearfix">
+          <span style="font-size: 30px; font-weight: 100;">今日公告</span>
+          <el-button
+            style="float: right; padding: 3px 0; font-size: 20px;"
+            type="text"
+            @click="dialogVisible = true"
+            >添加公告</el-button
+          >
+        </div>
+        <el-dialog
+            title="添加新公告"
+            :visible.sync="dialogVisible"
+            width="50%"
+            :before-close="handleClose">
+            <el-input v-model="newBoardContent" placeholder="请输入内容"></el-input>
+        <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="addBoard(newBoardContent)">确 定</el-button>
+  </span>
+</el-dialog>
+        <div class="board-card">
+          <el-card
+            shadow="hover"
+            v-for="item in msg"
+            :key="item"
+            style="margin-bottom: 10px;"
+          >
+            <h2 style="text-align: center;">{{item.content}}</h1>
+            <el-button @click="deleteBoard(item)" style="float: left; margin-bottom: 5px;">删除</el-button>
+            <span style="float: right; margin-top: 13px;"
+              >{{item.create_at}}</span
+            >
+          </el-card>
+        </div>
+      </el-card>
+    </div>
+    <script src="/static/js/vue.min.js"></script>
+    <script src="/static/element-ui/index.js"></script>
+    <script src="/static/js/axios.min.js"></script>
+    <script src="/route.js"></script>
+    <script src="/static/js/admin/board.js"></script>
+  </body>
 </html>

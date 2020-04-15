@@ -1,0 +1,31 @@
+[v-cloak] {
+  display: none;
+}
+body {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.el-menu-nav .logo-title {
+  margin-top: 10px;
+  font-size: 40px;
+}
+
+.nav {
+  font-size: 25px;
+}
+.el-menu .logout-userinfo {
+  float: right;
+  margin-top: 15px;
+}
+
+.el-menu-nav .nav {
+  margin-top: 15px;
+  margin-left: 50px;
+}
+
+.trainings-cards{
+    margin-top: 50px;
+    margin-left: 5%;
+    width: 90%;
+}

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>实训管理系统</title>
+    <link rel="stylesheet" href="/static/element-ui/index.css" />
+    <link
+      rel="shortcut icon"
+      href="/static/img/favicon.ico"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="/static/css/admin/training.css" />
+  </head>
+
+  <body>
+    <div id="app" v-cloak>
+      <el-menu
+        :default-active="navIndex"
+        class="el-menu-nav"
+        mode="horizontal"
+        @select="navSelect"
+        background-color="#545c64"
+        text-color="#fff"
+        active-text-color="#ffd04b"
+      >
+        <el-menu-item class="logo-title" index="1">实训管理系统</el-menu-item>
+        <el-menu-item class="nav" style="margin-left: 200px;" index="2"
+          >公告</el-menu-item
+        >
+        <el-menu-item class="nav" index="3">实训管理</el-menu-item>
+        <el-menu-item class="nav" index="4">教师管理</el-menu-item>
+        <el-menu-item class="nav" index="5">学生管理</el-menu-item>
+        <el-submenu class="logout-userinfo" index="6">
+          <template slot="title"><i class="el-icon-user"></i> 欢迎您</template>
+          <el-menu-item index="6-1">个人信息</el-menu-item>
+          <el-menu-item index="6-2">退出</el-menu-item>
+        </el-submenu>
+      </el-menu>
+
+      <el-card class="trainings-cards">
+        <div slot="header" class="clearfix">
+          <span style="font-size: 30px;">实训信息</span>
+        </div>
+        <div>
+          <div>
+            <el-row>
+              <el-col :span="4">
+                <el-button @click="deleteCourses">删除所选</el-button>
+              </el-col>
+              <el-col :span="15">
+                <div style="margin-bottom: 5px;">
+                  <el-input
+                    placeholder="请输入内容"
+                    v-model="searchCourse"
+                    class="input-with-select"
+                  >
+                    <el-select
+                      v-model="select"
+                      slot="prepend"
+                      placeholder="请选择"
+                      style="width: 100px;"
+                    >
+                      <el-option label="实训名" value="name"></el-option>
+                      <el-option label="实训ID" value="id"></el-option>
+                    </el-select>
+                    <el-button
+                      slot="append"
+                      icon="el-icon-search"
+                      @click="findCourse"
+                    ></el-button>
+                  </el-input>
+                </div>
+              </el-col>
+              <el-col :span="4">
+                <el-dropdown style="float: right;" @command="handleCommand">
+                  <el-button>
+                    添加实训<i class="el-icon-arrow-down el-icon--right"></i>
+                  </el-button>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item command="one">添加单个</el-dropdown-item>
+                    <el-dropdown-item command="much">文件导入</el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </el-col>
+
+              <el-dialog
+                title="创建实训"
+                :visible.sync="dialogAddOneTrainingVisible"
+                width="50%"
+              >
+                <el-form :model="trainingForm">
+                  <el-form-item label="实训ID" :label-width="formLabelWidth">
+                    <el-input
+                      v-model="trainingForm.id"
+                      auto-complete="off"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item label="实训名" :label-width="formLabelWidth">
+                    <el-input v-model="trainingForm.name"></el-input>
+                  </el-form-item>
+                  <el-form-item label="实训公司" :label-width="formLabelWidth">
+                    <el-input v-model="trainingForm.company"></el-input>
+                  </el-form-item>
+                  <el-form-item label="实训地址" :label-width="formLabelWidth">
+                    <el-input v-model="trainingForm.address"></el-input>
+                  </el-form-item>
+                  <el-form-item label="实训人数" :label-width="formLabelWidth">
+                    <el-input v-model="trainingForm.count"></el-input>
+                  </el-form-item>
+                  <el-form-item label="指导教师" :label-width="formLabelWidth">
+                    <el-input v-model="trainingForm.mentor"></el-input>
+                  </el-form-item>
+                  <el-form-item label="实训描述" :label-width="formLabelWidth">
+                    <el-input
+                      v-model="trainingForm.desc"
+                      type="textarea"
+                      :row="3"
+                    ></el-input>
+                  </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                  <el-button @click="dialogAddOneTrainingVisible = false"
+                    >取 消</el-button
+                  >
+                  <el-button type="primary" @click="pushTraining"
+                    >确 定</el-button
+                  >
+                </div>
+              </el-dialog>
+              <el-dialog
+                title="上传文件"
+                :visible.sync="dialogAddMuchVisible"
+                width="50%"
+              >
+                <el-upload
+                  class="upload-demo"
+                  ref="upload"
+                  action="http://127.0.0.1:9091/api/admin/addCourses"
+                  :headers="getHeader"
+                  :file-list="fileList"
+                  :auto-upload="false"
+                >
+                  <el-button slot="trigger" size="small" type="primary"
+                    >选取文件</el-button
+                  >
+                  <el-button
+                    style="margin-left: 10px;"
+                    size="small"
+                    type="success"
+                    @click="submitUpload"
+                    >上传到服务器</el-button
+                  >
+                  <div slot="tip" class="el-upload__tip">
+                    只能上传xlsx文件，且不超过8MB
+                  </div>
+                </el-upload>
+              </el-dialog>
+            </el-row>
+            <template>
+              <el-table
+                ref="multipleTable"
+                @selection-change="handleSelectionChange"
+                :data="msg"
+                border
+                stripe
+                style="width: 100%;"
+              >
+                <el-table-column type="selection"></el-table-column>
+                <el-table-column type="expand">
+                  <template slot-scope="props">
+                    <el-form label-position="left" class="demo-table-expand">
+                      <el-form-item label="实训名：">
+                        <span>{{ props.row.name }}</span>
+                      </el-form-item>
+                      <el-form-item label="实训地点：">
+                        <span>{{ props.row.address }}</span>
+                      </el-form-item>
+                      <el-form-item label="实训公司：">
+                        <span>{{ props.row.company }}</span>
+                      </el-form-item>
+                      <el-form-item label="指导教师：">
+                        <span>{{ props.row.mentor }}</span>
+                      </el-form-item>
+                      <el-form-item label="限选人数：">
+                        <span>{{ props.row.count }}</span>
+                      </el-form-item>
+                      <el-form-item label="实训描述：">
+                        <span>{{ props.row.desc }}</span>
+                      </el-form-item>
+                      <el-form-item label="发布时间：">
+                        <span>{{ props.row.create_at }}</span>
+                      </el-form-item>
+                    </el-form>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="id" label="实训编号"> </el-table-column>
+                <el-table-column prop="name" label="实训名"> </el-table-column>
+                <el-table-column prop="count" label="限选人数">
+                </el-table-column>
+              </el-table>
+            </template>
+          </div>
+        </div>
+        <el-pagination
+          layout="prev, pager, next"
+          style="text-align: center;"
+          :total="msg.length"
+        >
+        </el-pagination>
+      </el-card>
+    </div>
+
+    <script src="/static/js/vue.min.js"></script>
+    <script src="/static/element-ui/index.js"></script>
+    <script src="/static/js/axios.min.js"></script>
+    <script src="/route.js"></script>
+    <script src="/static/js/admin/training.js"></script>
+  </body>
+</html>

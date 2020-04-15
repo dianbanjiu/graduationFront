@@ -68,8 +68,7 @@ const vm = new Vue({
 
               setCookie("identify", iden);
               setTimeout(() => {
-                window.location.href =
-                  window.location.href + iden + "/board.html";
+                window.location.href ="/"+iden+"/board.html";
               }, 1000);
             }
           })
