@@ -34,7 +34,12 @@ body{
 } h3{
     margin-left: 5%;
 }
-
+.view-courses{
+    white-space: pre-wrap;
+}
 .view-courses h3{
     margin-left: 5%;
+}
+.selected-table{
+    white-space: pre-wrap;
 }
