@@ -3,7 +3,6 @@
 }
 body {
   margin: 0;
-  white-space: pre-wrap;
 }
 
 .el-menu-nav .logo-title {
@@ -24,8 +23,9 @@ body {
   margin-left: 50px;
 }
 
-.trainings-cards{
-    margin-top: 50px;
-    margin-left: 5%;
-    width: 90%;
+.trainings-cards {
+  margin-top: 50px;
+  margin-left: 5%;
+  width: 90%;
+  white-space: pre-wrap;
 }

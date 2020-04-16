@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>实训管理系统</title>
+    <link rel="stylesheet" href="/static/element-ui/index.css" />
+    <link
+      rel="shortcut icon"
+      href="/static/img/favicon.ico"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="/static/css/student/publication.css" />
+  </head>
+
+  <body>
+    <div id="app">
+      <el-menu
+        :default-active="navIndex"
+        class="el-menu-nav"
+        mode="horizontal"
+        @select="navSelect"
+        background-color="#0779e4"
+        text-color="#fff"
+        active-text-color="#ffd04b"
+      >
+        <el-menu-item class="logo-title" index="1">实训管理系统</el-menu-item>
+        <el-menu-item class="nav" style="margin-left: 200px;" index="2"
+          >公告</el-menu-item
+        >
+        <el-menu-item class="nav" index="3">实训选择</el-menu-item>
+        <el-menu-item class="nav" index="4">周报填写</el-menu-item>
+        <el-submenu class="logout-userinfo" index="5">
+          <template slot="title"><i class="el-icon-user"></i> 欢迎您</template>
+          <el-menu-item index="5-1">个人信息</el-menu-item>
+          <el-menu-item index="5-2">退出</el-menu-item>
+        </el-submenu>
+      </el-menu>
+      <el-button
+        type="primary"
+        style="bottom: 10px; position: fixed; width: 90%;margin-left: 5%;"
+        icon="el-icon-edit"
+        @click="activeAddDialog"
+      >点此添加周报</el-button>
+
+      <el-dialog
+        title="新的周报"
+        :visible.sync="dialogVisible"
+        width="50%"
+        :before-close="handleClose"
+      >
+      <el-input
+      type="textarea"
+      autosize
+      :autosize="{ minRows: 20}"
+      placeholder="请输入内容"
+      v-model="newPublication">
+    </el-input>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="addPublication"
+            >确 定</el-button
+          >
+        </span>
+      </el-dialog>
+
+      <el-card class="publication-cards">
+        <div class="board-card">
+          <el-card
+            shadow="always"
+            v-for="item in msg"
+            :key="item"
+            style="margin-bottom: 10px;"
+          >
+            <div slot="header">
+              <span style="font-size: 20px;"
+                >{{item.create_at.substring(0,10)}}</span
+              >
+            </div>
+            <div>
+              <p style="font-size: 25px;">{{item.content}}</p>
+            </div>
+            <div>
+              <el-collapse>
+                <el-collapse-item>
+                  <template slot="title">
+                    <span style="font-size: 15px;">教师评价</span>
+                    <i class="header-icon el-icon-chat-line-round"></i>
+                  </template>
+                  <div style="font-size: 15px;">
+                    {{item.teacher_evaluation}}
+                  </div>
+                </el-collapse-item>
+              </el-collapse>
+            </div>
+          </el-card>
+        </div>
+        <el-pagination
+          layout="prev, pager, next"
+          :total="msg.length"
+          style="text-align: center;"
+        >
+        </el-pagination>
+      </el-card>
+    </div>
+    <script src="/static/js/vue.min.js"></script>
+    <script src="/static/element-ui/index.js"></script>
+    <script src="/static/js/axios.min.js"></script>
+    <script src="/route.js"></script>
+    <script src="/static/js/student/publication.js"></script>
+  </body>
+</html>

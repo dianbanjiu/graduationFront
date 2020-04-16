@@ -1,0 +1,42 @@
+[v-cloak]{display: none;}
+body{
+    margin: 0;
+}
+.el-dropdown-link{
+    float: right;
+    color: white;
+}
+.el-menu-nav .logo-title{
+    margin-top: 10px;
+    font-size: 40px;
+}
+
+.nav{
+    font-size: 25px;
+}
+.el-menu .logout-userinfo{
+    float: right;
+    margin-top: 15px;
+}
+.el-row{
+    width: 100%;
+    height: 90px;
+    background-color: #545c64;
+    padding: 3px 0;
+    color: white;
+}
+.el-menu-nav .nav{
+    margin-top: 15px;
+    margin-left: 50px;
+}
+.selected-table{
+    margin-top: 50px;
+} h3{
+    margin-left: 5%;
+}
+.view-courses{
+    white-space: pre-wrap;
+}
+.view-courses h3{
+    margin-left: 5%;
+}

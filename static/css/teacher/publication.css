@@ -1,0 +1,34 @@
+[v-cloak]{display: none;}
+body{
+    margin: 0;
+}
+.boards-cards{
+    width: 70%;
+    margin-left: 15%;
+    margin-top: 30px;
+}
+.el-dropdown-link{
+    float: right;
+    color: white;
+}
+.el-menu-nav .logo-title{
+    margin-top: 10px;
+    font-size: 40px;
+}
+
+.nav{
+    font-size: 25px;
+}
+.el-menu .logout-userinfo{
+    float: right;
+    margin-top: 15px;
+}
+.el-menu-nav .nav{
+    margin-top: 15px;
+    margin-left: 50px;
+}
+.publications-cards{
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 50px;
+}
