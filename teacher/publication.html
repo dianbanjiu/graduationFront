@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>实训管理系统</title>
+    <link rel="stylesheet" href="/static/element-ui/index.css" />
+    <link
+      rel="shortcut icon"
+      href="/static/img/favicon.ico"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="/static/css/teacher/publication.css" />
+  </head>
+
+  <body>
+    <div id="app" v-cloak>
+      <el-menu
+        :default-active="navIndex"
+        class="el-menu-nav"
+        mode="horizontal"
+        @select="navSelect"
+        background-color="#342ead"
+        text-color="#fff"
+        active-text-color="#ffd04b"
+      >
+        <el-menu-item class="logo-title" index="1">实训管理系统</el-menu-item>
+        <el-menu-item class="nav" style="margin-left: 200px;" index="2"
+          >公告</el-menu-item
+        >
+        <el-menu-item class="nav" index="3">实训管理</el-menu-item>
+        <el-menu-item class="nav" index="4">周报管理</el-menu-item>
+        <el-submenu class="logout-userinfo" index="5">
+          <template slot="title"><i class="el-icon-user"></i> 欢迎您</template>
+          <el-menu-item index="5-1">个人信息</el-menu-item>
+          <el-menu-item index="5-2">退出</el-menu-item>
+        </el-submenu>
+      </el-menu>
+
+      <el-card class="publications-cards">
+        <div slot="header">
+          <h2>学生日志管理</h2>
+        </div>
+
+        <template>
+          <el-table
+            :data="msg"
+            border
+            stripe
+            style="width: 100%;"
+            :default-sort="{prop: 'date', order: 'descending'}"
+          >
+            <el-table-column type="expand">
+              <template slot-scope="props">
+                <el-form label-position="left" class="demo-table-expand">
+                  <el-form-item label="周报内容：">
+                    <span>{{ props.row.content }}</span>
+                  </el-form-item>
+                  <el-form-item label="教师评语：">
+                    <span>{{ props.row.teacher_evaluation }}</span>
+                  </el-form-item>
+                </el-form>
+              </template>
+            </el-table-column>
+            <el-table-column prop="student_id" label="学号"> </el-table-column>
+            <el-table-column prop="student_name" label="姓名">
+            </el-table-column>
+            <el-table-column prop="teacher_score" sortable label="评分(5 分制)">
+            </el-table-column>
+            <el-table-column label="评分/评价 修改">
+              <template slot-scope="scope">
+                <el-button
+                  type="primary"
+                  size="small"
+                  @click="dialogVisible=true"
+                  >添加</el-button
+                >
+                <el-button
+                  type="danger"
+                  size="small"
+                  @click="deletePublication(scope.row.id)"
+                  >删除</el-button
+                >
+                <el-dialog
+                  title="提示"
+                  :visible.sync="dialogVisible"
+                  width="50%"
+                  :before-close="handleClose"
+                >
+                  <el-form
+                    ref="publicationForm"
+                    :model="publicationForm"
+                    label-position="right"
+                    label-width="80px"
+                  >
+                    <el-form-item label="学号："
+                      >{{scope.row.student_id}}</el-form-item
+                    >
+                    <el-form-item label="姓名："
+                      >{{scope.row.student_name}}</el-form-item
+                    >
+                    <el-form-item label="日志："
+                      >{{scope.row.content}}</el-form-item
+                    >
+                    <el-form-item label="评分：">
+                      <el-input
+                        placeholder="五分制，请输入 0-5 之内的数字，可以为小数"
+                        v-model="publicationForm.score"
+                      ></el-input>
+                    </el-form-item>
+                    <el-form-item label="评价：">
+                      <el-input
+                        type="textarea"
+                        :autosize="{ minRows: 2}"
+                        placeholder="请输入内容"
+                        v-model="publicationForm.content"
+                      ></el-input>
+                    </el-form-item>
+                  </el-form>
+                  <span slot="footer" class="dialog-footer">
+                    <el-button @click="dialogVisible = false">取 消</el-button>
+                    <el-button
+                      type="primary"
+                      @click="addEvaluation(scope.row.id)"
+                      >确 定</el-button
+                    >
+                  </span>
+                </el-dialog>
+              </template>
+            </el-table-column>
+          </el-table>
+        </template>
+        <el-pagination
+          layout="prev, pager, next"
+          :total="msg.length"
+          style="text-align: center;"
+        >
+        </el-pagination>
+      </el-card>
+    </div>
+    <script src="/static/js/vue.min.js"></script>
+    <script src="/static/element-ui/index.js"></script>
+    <script src="/static/js/axios.min.js"></script>
+    <script src="/route.js"></script>
+    <script src="/static/js/teacher/publication.js"></script>
+  </body>
+</html>
