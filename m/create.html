@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>记录</title>
+    <link rel="stylesheet" href="/static/element-ui/index.css" />
+    <link rel="stylesheet" href="./css/create.css" />
+    <link rel="shortcut icon" href="./img/favicon.ico" type="image/x-icon" />
+  </head>
+
+  <body>
+    <div id="app" v-clock>
+      <el-menu
+        :default-active="activeIndex"
+        class="el-menu-demo"
+        mode="horizontal"
+        @select="handleSelect"
+        background-color="#545c64"
+        text-color="#fff"
+        active-text-color="#ffd04b"
+        style="text-align: center;"
+      >
+      <el-menu-item index="0" style="width: 25%;"
+          ><i class="el-icon-message-solid"></i>公告</el-menu-item
+        >
+        <el-menu-item index="1" style="width: 25%;"
+          ><i class="el-icon-s-home"></i>首页</el-menu-item
+        >
+        <el-menu-item index="2" style="width: 25%;"
+          ><i class="el-icon-circle-plus"></i>记录</el-menu-item
+        >
+        <el-menu-item index="3" style="width: 25%;"
+          ><i class="el-icon-s-tools"></i>更多</el-menu-item
+        >
+      </el-menu>
+      
+      
+      <el-form style="margin-top: 20px;background-color: white;">
+        <el-form-item>
+          <el-input type="textarea" placeholder="在此处添加周报内容" :autosize="{ minRows: 4}" v-model="newPost"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="danger" style="margin-left: 10px;" @click="clear">重置</el-button>
+          <el-button type="primary" style="float: right; margin-right: 10px;" @click="addNewPost">发布</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+
+    <script src="/static/js/vue.min.js"></script>
+    <script src="/static/element-ui/index.js"></script>
+    <script src="/static/js/axios.min.js"></script>
+    <script src="/route.js"></script>
+    <script src="./js/create.js"></script>
+  </body>
+</html>

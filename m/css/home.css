@@ -1,0 +1,10 @@
+[v-cloak] {
+  display: none;
+}
+body {
+  margin: 0;
+  background-image: url("../img/back.jpg");
+}
+.publication-cards {
+  margin-top: 10px;
+}

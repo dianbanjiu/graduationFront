@@ -1,0 +1,19 @@
+[v-clock]{display:none}
+      body{
+        margin: 0;
+        background-image: url('../img/back.jpg');
+      }
+    
+      .login-card{
+        margin-top: 45%;
+      }
+      .welcome{
+        font-size: 20px;
+        font-weight: bold;
+      }
+      .el-input{
+        margin-bottom: 5px;
+      }
+      .submit{
+        width: 50%;
+      }

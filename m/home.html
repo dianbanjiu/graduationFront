@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>首页</title>
+    <link rel="stylesheet" href="/static/element-ui/index.css" />
+    <link rel="stylesheet" href="./css/home.css" />
+    <link rel="shortcut icon" href="./img/favicon.ico" type="image/x-icon" />
+  </head>
+
+  <body>
+    <div id="app" v-cloak>
+      <el-menu
+        :default-active="activeIndex"
+        class="el-menu-demo"
+        mode="horizontal"
+        @select="handleSelect"
+        background-color="#545c64"
+        text-color="#fff"
+        active-text-color="#ffd04b"
+        style="text-align: center;"
+      >
+      <el-menu-item index="0" style="width: 25%;"
+      ><i class="el-icon-message-solid"></i>公告</el-menu-item
+    >
+    <el-menu-item index="1" style="width: 25%;"
+      ><i class="el-icon-s-home"></i>首页</el-menu-item
+    >
+    <el-menu-item index="2" style="width: 25%;"
+      ><i class="el-icon-circle-plus"></i>记录</el-menu-item
+    >
+    <el-menu-item index="3" style="width: 25%;"
+      ><i class="el-icon-s-tools"></i>更多</el-menu-item
+    >
+      </el-menu>
+
+      <el-card class="publication-cards">
+        <div class="board-card">
+          <el-card
+            shadow="always"
+            v-for="item in msg"
+            :key="item"
+            style="margin-bottom: 10px;"
+          >
+            <div slot="header">
+              <span style="font-size: 20px;"
+                >{{item.create_at.substring(0,10)}}</span
+              >
+            </div>
+            <div>
+              <p style="font-size: 15px;">{{item.content}}</p>
+            </div>
+            <div>
+              <el-collapse>
+                <el-collapse-item>
+                  <template slot="title">
+                    <span style="font-size: 15px;">教师评价</span>
+                    <i class="header-icon el-icon-chat-line-round"></i>
+                  </template>
+                  <div style="font-size: 15px;">
+                    {{item.teacher_evaluation}}
+                  </div>
+                </el-collapse-item>
+              </el-collapse>
+            </div>
+          </el-card>
+        </div>
+        <el-pagination
+          layout="prev, pager, next"
+          :total="msg.length"
+          style="text-align: center;"
+        >
+        </el-pagination>
+      </el-card>
+    </div>
+
+    <script src="/static/js/vue.min.js"></script>
+    <script src="/static/element-ui/index.js"></script>
+    <script src="/static/js/axios.min.js"></script>
+    <script src="/route.js"></script>
+    <script src="./js/home.js"></script>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+[v-cloak]{display: none;}
+body{
+    margin: 0;
+    background-image: url('../img/back.jpg');
+
+}
+.editor{
+    margin-top: 20px;
+    background-color: white;
+}
+.toolbar{
+    background-color: white;
+}

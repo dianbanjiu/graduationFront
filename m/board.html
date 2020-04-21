@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>公告</title>
+    <link rel="stylesheet" href="/static/element-ui/index.css" />
+    <link rel="stylesheet" href="./css/board.css" />
+    <link rel="shortcut icon" href="./img/favicon.ico" type="image/x-icon" />
+  </head>
+
+  <body>
+    <div id="app" v-cloak>
+      <el-menu
+        :default-active="activeIndex"
+        class="el-menu-demo"
+        mode="horizontal"
+        @select="handleSelect"
+        background-color="#545c64"
+        text-color="#fff"
+        active-text-color="#ffd04b"
+        style="text-align: center;"
+      >
+      <el-menu-item index="0" style="width: 25%;"
+      ><i class="el-icon-message-solid"></i>公告</el-menu-item
+    >
+    <el-menu-item index="1" style="width: 25%;"
+      ><i class="el-icon-s-home"></i>首页</el-menu-item
+    >
+    <el-menu-item index="2" style="width: 25%;"
+      ><i class="el-icon-circle-plus"></i>记录</el-menu-item
+    >
+    <el-menu-item index="3" style="width: 25%;"
+      ><i class="el-icon-s-tools"></i>更多</el-menu-item
+    >
+      </el-menu>
+
+        
+        
+          <el-card
+            shadow="hover"
+            v-for="item in msg"
+            :key="item"
+            style="margin-bottom: 10px;margin-top: 10px;"
+          >
+            <h2 style="text-align: center;">{{item.content}}</h1>
+            <span style="float: right; margin-top: 13px;"
+              >{{item.create_at}}</span
+            >
+          </el-card>
+    </div>
+
+    <script src="/static/js/vue.min.js"></script>
+    <script src="/static/element-ui/index.js"></script>
+    <script src="/static/js/axios.min.js"></script>
+    <script src="/route.js"></script>
+    <script src="./js/board.js"></script>
+  </body>
+</html>
