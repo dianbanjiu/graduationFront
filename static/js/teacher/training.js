@@ -5,6 +5,7 @@ const trainingVm = new Vue({
       msg: [],
       navIndex: "",
       allCourses:[],
+      selectedStudents:{},
     };
   },
   methods: {
@@ -38,5 +39,7 @@ const trainingVm = new Vue({
     instance.get('/getCourses').then(res=>{
         trainingVm.allCourses=res.data["msg"]
       })
+    instance.get("/teacher/viewAllSelectedStudents").then(res=>{
+      trainingVm.selectedStudents=res.data["msg"]})
   },
 });

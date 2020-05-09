@@ -42,7 +42,7 @@
       </el-menu>
       
       <div class="view-courses">
-        <h3>我的实训</h3>
+        <h3>管理实训</h3>
         <div>
           <el-table
             ref="multipleTable"
@@ -87,13 +87,31 @@
             ></el-table-column>
             
           </el-table>
-
-          <el-pagination
-            layout="prev, pager, next"
-            style="text-align: center;"
-            :total="allCourses.length"
-          >
-          </el-pagination>
+        </div>
+        <div style="margin-top: 30px;">
+          <h3>选课学生</h3>
+          <template>
+            <el-table
+              :data="selectedStudents"
+              stripe
+              border
+              style="width: 90%;margin-left: 5%;">
+              <el-table-column
+                prop="name"
+                label="姓名"
+                >
+              </el-table-column>
+              <el-table-column
+                prop="id"
+                label="学号"
+                >
+              </el-table-column>
+              <el-table-column
+                prop="profession"
+                label="专业">
+              </el-table-column>
+            </el-table>
+          </template>
         </div>
       </div>
     </div>
