@@ -42,11 +42,18 @@
       </el-menu>
       <el-button
         type="primary"
-        style="bottom: 30px;height: 80px;width: 80px; position: fixed;margin-left: 95%;"
+        style="
+          bottom: 30px;
+          height: 80px;
+          width: 80px;
+          position: fixed;
+          margin-left: 95%;
+        "
         icon="el-icon-edit"
         @click="activeAddDialog"
         circle
-      >添加</el-button>
+        >添加</el-button
+      >
 
       <el-dialog
         title="新的周报"
@@ -54,26 +61,30 @@
         width="80%"
         :before-close="handleClose"
       >
-      <el-input
-      type="textarea"
-      autosize
-      :autosize="{ minRows: 20}"
-      placeholder="请输入内容, 此处支持 markdown 语法"
-      v-model="newPublication">
-    </el-input>
+        <el-input
+          type="textarea"
+          autosize
+          :autosize="{ minRows: 20}"
+          placeholder="请输入内容, 此处支持 markdown 语法"
+          v-model="newPublication"
+        >
+        </el-input>
         <span slot="footer" class="dialog-footer">
           <el-popover
-    placement="top-start"
-    title="markdown"
-    width="200"
-    trigger="hover"
-    content="插入图片请先将图片上传至图床，然后使用 markdown 语法添加">
-    <i class="el-icon-question" slot="reference" style="float: left;"></i>
-  </el-popover>
-          <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="addPublication"
-            >确 定</el-button
+            placement="top-start"
+            title="markdown"
+            width="200"
+            trigger="hover"
+            content="插入图片请先将图片上传至图床，然后使用 markdown 语法添加"
           >
+            <i
+              class="el-icon-question"
+              slot="reference"
+              style="float: left;"
+            ></i>
+          </el-popover>
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="addPublication">确 定</el-button>
         </span>
       </el-dialog>
 
