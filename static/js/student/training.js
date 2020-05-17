@@ -34,29 +34,41 @@ var boardVm = new Vue({
             }
         },
         dropCourse(){
-          if (boardVm.selectedCourse.length===0||boardVm.selectedCourse[0].id===undefined||boardVm.selectedCourse[0].id===""){
-            boardVm.$message({
-              message:'你还尚未选择任何课程',
-              type:'warning'
-            })
-          }else{
-            instance.post('/student/dropCourse',{
-              id:boardVm.selectedCourse[0].id
-            }).then(()=>{
+          boardVm.$confirm('确定要退选该课程？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            if (boardVm.selectedCourse.length===0||boardVm.selectedCourse[0].id===undefined||boardVm.selectedCourse[0].id===""){
               boardVm.$message({
-                message:'退选成功',
-                type:'success'
+                message:'你还尚未选择任何课程',
+                type:'warning'
               })
-              setTimeout(()=>{
-                window.location.reload()
-              },1000)
-            }).catch(()=>{
-              boardVm.$message({
-                message:'退选失败',
-                type:'error'
+            }else{
+              instance.post('/student/dropCourse',{
+                id:boardVm.selectedCourse[0].id
+              }).then(()=>{
+                boardVm.$message({
+                  message:'退选成功',
+                  type:'success'
+                })
+                setTimeout(()=>{
+                  window.location.reload()
+                },1000)
+              }).catch(()=>{
+                boardVm.$message({
+                  message:'退选失败',
+                  type:'error'
+                })
               })
-            })
-          }
+            }
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            });          
+          });
+          
         },
         selectCourse(id){
           if(boardVm.selectedCourse.length!=0){

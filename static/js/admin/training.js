@@ -48,21 +48,33 @@ const courseVm = new Vue({
       courseVm.multipleSelection.push(val);
     },
     deleteCourses() {
-      if (courseVm.multipleSelection.length === 0) {
-        return;
-      }
-      for (var i = 0; i < courseVm.multipleSelection.length; i++) {
-        instance.post("/admin/deleteCourses", {
-          id: courseVm.multipleSelection[i][0].id,
+      courseVm.$confirm('此操作将永久删除该实训, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        if (courseVm.multipleSelection.length === 0) {
+          return;
+        }
+        for (var i = 0; i < courseVm.multipleSelection.length; i++) {
+          instance.post("/admin/deleteCourses", {
+            id: courseVm.multipleSelection[i][0].id,
+          });
+        }
+        courseVm.$message({
+          message: "删除成功",
+          type: "success",
         });
-      }
-      courseVm.$message({
-        message: "删除成功",
-        type: "success",
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });          
       });
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      
     },
     findCourse() {
       let t = [];

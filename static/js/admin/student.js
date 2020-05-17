@@ -60,21 +60,33 @@ const studentVm = new Vue({
       studentVm.msg = t;
     },
     deletestudents() {
-      if (studentVm.multipleSelection.length === 0) {
-        return;
-      }
-      for (var i = 0; i < studentVm.multipleSelection.length; i++) {
-        instance.post("/admin/deleteUsers", {
-          id: studentVm.multipleSelection[i].id,
+      studentVm.$confirm('确定删除该名学生?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        if (studentVm.multipleSelection.length === 0) {
+          return;
+        }
+        for (var i = 0; i < studentVm.multipleSelection.length; i++) {
+          instance.post("/admin/deleteUsers", {
+            id: studentVm.multipleSelection[i].id,
+          });
+        }
+        studentVm.$message({
+          message: "删除成功",
+          type: "success",
         });
-      }
-      studentVm.$message({
-        message: "删除成功",
-        type: "success",
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });          
       });
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      
     },
     handleSelectionChange(val) {
       studentVm.multipleSelection = val;

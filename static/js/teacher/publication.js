@@ -37,22 +37,34 @@ const publicationVm = new Vue({
       }
     },
     deletePublication(id){
+      publicationVm.$confirm('是否删除评价', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
         instance.post('/teacher/deleteEvaluation',{
-            "id":id
-        }).then(()=>{
-            publicationVm.$message({
-                message:'删除成功',
-                type:'success'
-            })
-            setTimeout(()=>{
-                window.location.reload()
-            },1000)
-        }).catch(()=>{
-            publicationVm.$message({
-                message:'删除失败',
-                type:'error'
-            })
-        })
+          "id":id
+      }).then(()=>{
+          publicationVm.$message({
+              message:'删除成功',
+              type:'success'
+          })
+          setTimeout(()=>{
+              window.location.reload()
+          },1000)
+      }).catch(()=>{
+          publicationVm.$message({
+              message:'删除失败',
+              type:'error'
+          })
+      })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });          
+      });
+        
     },
     handleClose(done) {
         this.$confirm('确认关闭？')
