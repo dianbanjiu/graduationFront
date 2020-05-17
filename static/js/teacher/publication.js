@@ -1,3 +1,4 @@
+Vue.use(VueMarkdown);
 const publicationVm = new Vue({
   el: "#app",
   data() {
@@ -5,7 +6,8 @@ const publicationVm = new Vue({
       msg: [],
       navIndex: "",
       dialogVisible:false,
-      publicationForm:{}
+      publicationForm:{},
+      evaluation:""
     };
   },
   methods: {
@@ -59,6 +61,10 @@ const publicationVm = new Vue({
           })
           .catch(_ => {});
       },
+      ap(row){
+        publicationVm.dialogVisible=true
+        publicationVm.publicationForm=row
+      },
       addEvaluation(id){
          publicationVm.dialogVisible = false
          if (publicationVm.publicationForm.score===undefined&&publicationVm.publicationForm.content===undefined){
@@ -71,7 +77,7 @@ const publicationVm = new Vue({
          instance.post('/teacher/evaluationAndScore',{
              "id":id,
              "teacher_score":publicationVm.publicationForm.score,
-             "teacher_evaluation":publicationVm.publicationForm.content
+             "teacher_evaluation":publicationVm.publicationForm.teacher_evaluation
          }).then(()=>{
             publicationVm.$message({
                 message:'评价成功',

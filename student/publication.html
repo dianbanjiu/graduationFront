@@ -51,17 +51,25 @@
       <el-dialog
         title="新的周报"
         :visible.sync="dialogVisible"
-        width="50%"
+        width="80%"
         :before-close="handleClose"
       >
       <el-input
       type="textarea"
       autosize
       :autosize="{ minRows: 20}"
-      placeholder="请输入内容"
+      placeholder="请输入内容, 此处支持 markdown 语法"
       v-model="newPublication">
     </el-input>
         <span slot="footer" class="dialog-footer">
+          <el-popover
+    placement="top-start"
+    title="markdown"
+    width="200"
+    trigger="hover"
+    content="插入图片请先将图片上传至图床，然后使用 markdown 语法添加">
+    <i class="el-icon-question" slot="reference" style="float: left;"></i>
+  </el-popover>
           <el-button @click="dialogVisible = false">取 消</el-button>
           <el-button type="primary" @click="addPublication"
             >确 定</el-button
@@ -83,7 +91,7 @@
               >
             </div>
             <div>
-              <p style="font-size: 25px;">{{item.content}}</p>
+              <vue-markdown>{{item.content}}</vue-markdown>
             </div>
             <div>
               <el-collapse>
@@ -112,6 +120,7 @@
     <script src="/static/element-ui/index.js"></script>
     <script src="/static/js/axios.min.js"></script>
     <script src="/route.js"></script>
+    <script src="/static/js/vue-markdown.js"></script>
     <script src="/static/js/student/publication.js"></script>
   </body>
 </html>

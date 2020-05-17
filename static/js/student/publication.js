@@ -1,3 +1,4 @@
+Vue.use(VueMarkdown);
 var publicationVm = new Vue({
     el:'#app',
     data(){
