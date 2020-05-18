@@ -69,6 +69,18 @@
           v-model="newPublication"
         >
         </el-input>
+        <vue-markdown
+          :watches="['show','html','breaks','linkify','emoji','typographer','toc']"
+          :source="newPublication"
+          :show="show"
+          :html="html"
+          :breaks="breaks"
+          :linkify="linkify"
+          :emoji="emoji"
+          :typographer="typographer"
+          :toc="toc"
+          toc-id="toc"
+        ></vue-markdown>
         <span slot="footer" class="dialog-footer">
           <el-popover
             placement="top-start"
