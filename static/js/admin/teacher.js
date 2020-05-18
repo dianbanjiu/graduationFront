@@ -11,6 +11,8 @@ const teacherVm = new Vue({
       dialogVisible: false,
       fileList: [],
       getHeader: { Authorization: "Bearer " + getCookie("token") },
+      currentPage: 1,
+      teachers: [],
     };
   },
   methods: {
@@ -57,36 +59,38 @@ const teacherVm = new Vue({
           }
         }
       }
-      teacherVm.msg = t;
+      teacherVm.teachers = t;
     },
     deleteTeachers() {
-      teacherVm.$confirm('确定删除该教师？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        if (teacherVm.multipleSelection.length === 0) {
-          return;
-        }
-        for (var i = 0; i < teacherVm.multipleSelection.length; i++) {
-          instance.post("/admin/deleteUsers", {
-            id: teacherVm.multipleSelection[i].id,
+      teacherVm
+        .$confirm("确定删除该教师？", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
+        .then(() => {
+          if (teacherVm.multipleSelection.length === 0) {
+            return;
+          }
+          for (var i = 0; i < teacherVm.multipleSelection.length; i++) {
+            instance.post("/admin/deleteUsers", {
+              id: teacherVm.multipleSelection[i].id,
+            });
+          }
+          teacherVm.$message({
+            message: "删除成功",
+            type: "success",
           });
-        }
-        teacherVm.$message({
-          message: "删除成功",
-          type: "success",
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
         });
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        });          
-      });
-      
     },
     handleSelectionChange(val) {
       teacherVm.multipleSelection = val;
@@ -142,6 +146,12 @@ const teacherVm = new Vue({
       })
       .then((res) => {
         teacherVm.msg = res.data["msg"];
+        teacherVm.teachers = teacherVm.msg.slice(0, 10);
       });
+  },
+  watch: {
+    currentPage(val) {
+      teacherVm.teachers = teacherVm.msg.slice(10 * (val - 1), 10 * val);
+    },
   },
 });

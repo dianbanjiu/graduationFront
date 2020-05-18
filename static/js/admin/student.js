@@ -11,6 +11,8 @@ const studentVm = new Vue({
       dialogVisible: false,
       fileList: [],
       getHeader: { Authorization: "Bearer " + getCookie("token") },
+      currentPage:1,
+      students:[]
     };
   },
   methods: {
@@ -57,7 +59,7 @@ const studentVm = new Vue({
           }
         }
       }
-      studentVm.msg = t;
+      studentVm.students = t;
     },
     deletestudents() {
       studentVm.$confirm('确定删除该名学生?', '提示', {
@@ -142,6 +144,12 @@ const studentVm = new Vue({
       })
       .then((res) => {
         studentVm.msg = res.data["msg"];
+        studentVm.students = studentVm.msg.slice(0,10)
       });
   },
+  watch:{
+    currentPage(val){
+      studentVm.students = studentVm.msg.slice(10*(val-1),10*val)
+    }
+  }
 });

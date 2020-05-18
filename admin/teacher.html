@@ -75,7 +75,7 @@
           </el-col>
           <el-col :span="4">
             <el-dropdown style="float: right;" @command="handleCommand">
-              <el-button >
+              <el-button>
                 添加教师<i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown">
@@ -86,55 +86,65 @@
           </el-col>
         </el-row>
 
-          <el-row class="adduserone" :style="adduservisible">
-            <el-col :span="3">
-                <el-input v-model="userone.id" placeholder="工号"></el-input>
-            </el-col>
-            <el-col :span="3">
-                <el-input v-model="userone.name" placeholder="姓名"></el-input>
-            </el-col>
-            <el-col :span="4">
-                <el-input v-model="userone.phone" placeholder="手机号"></el-input>
-            </el-col>
-            <el-col :span="3">
-                <el-select v-model="userone.gender" placeholder="性别">
-                    <el-option value="男">男</el-option>
-                    <el-option value="女">女</el-option>
-                </el-select>
-            </el-col>
-            <el-col :span="3">
-                <el-input v-model="userone.profession" placeholder="职务"></el-input>
-            </el-col>
-            <el-col :span="3">
-                <el-input v-model="userone.school" placeholder="单位"></el-input>
-            </el-col>
-            <el-col :span="3">
-                <el-button @click="pushuser" type="primary">添加教师</el-button>
-            </el-col>
+        <el-row class="adduserone" :style="adduservisible">
+          <el-col :span="3">
+            <el-input v-model="userone.id" placeholder="工号"></el-input>
+          </el-col>
+          <el-col :span="3">
+            <el-input v-model="userone.name" placeholder="姓名"></el-input>
+          </el-col>
+          <el-col :span="4">
+            <el-input v-model="userone.phone" placeholder="手机号"></el-input>
+          </el-col>
+          <el-col :span="3">
+            <el-select v-model="userone.gender" placeholder="性别">
+              <el-option value="男">男</el-option>
+              <el-option value="女">女</el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="3">
+            <el-input
+              v-model="userone.profession"
+              placeholder="职务"
+            ></el-input>
+          </el-col>
+          <el-col :span="3">
+            <el-input v-model="userone.school" placeholder="单位"></el-input>
+          </el-col>
+          <el-col :span="3">
+            <el-button @click="pushuser" type="primary">添加教师</el-button>
+          </el-col>
         </el-row>
         <div>
-            <el-dialog
-                    title="提示"
-                    :visible.sync="dialogVisible"
-                    width="35%"
-                    >
-                <el-upload
-                        class="upload-demo"
-                        ref="upload"
-                        action="http://127.0.0.1:9091/api/admin/addUsers"
-                        :file-list="fileList"
-                        :on-success="uploadSuccess"
-                        :headers="getHeader"
-                        :auto-upload="false">
-                    <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-                    <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
-                    <div slot="tip" class="el-upload__tip">只能上传xlsx文件，且不超过1MB</div>
-                </el-upload>
-            </el-dialog>
+          <el-dialog title="提示" :visible.sync="dialogVisible" width="35%">
+            <el-upload
+              class="upload-demo"
+              ref="upload"
+              action="http://127.0.0.1:9091/api/admin/addUsers"
+              :file-list="fileList"
+              :on-success="uploadSuccess"
+              :headers="getHeader"
+              :auto-upload="false"
+            >
+              <el-button slot="trigger" size="small" type="primary"
+                >选取文件</el-button
+              >
+              <el-button
+                style="margin-left: 10px;"
+                size="small"
+                type="success"
+                @click="submitUpload"
+                >上传到服务器</el-button
+              >
+              <div slot="tip" class="el-upload__tip">
+                只能上传xlsx文件，且不超过1MB
+              </div>
+            </el-upload>
+          </el-dialog>
         </div>
         <template>
           <el-table
-            :data="msg"
+            :data="teachers"
             border
             style="width: 100%;"
             @selection-change="handleSelectionChange"
@@ -149,7 +159,14 @@
             <el-table-column prop="profession" label="专业"></el-table-column>
           </el-table>
         </template>
-        <el-pagination layout="prev, pager, next" style="text-align: center;" :total="msg.length"> </el-pagination>
+        <el-pagination
+          background
+          :current-page.sync="currentPage"
+          layout="prev, pager, next"
+          style="text-align: center; margin-top: 20px;"
+          :total="msg.length"
+        >
+        </el-pagination>
       </el-card>
     </div>
     <script src="/static/js/vue.min.js"></script>

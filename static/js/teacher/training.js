@@ -2,10 +2,9 @@ const trainingVm = new Vue({
   el: "#app",
   data() {
     return {
-      msg: [],
       navIndex: "",
-      allCourses:[],
-      selectedStudents:{},
+      allCourses: [],
+      selectedStudents: {},
     };
   },
   methods: {
@@ -36,10 +35,11 @@ const trainingVm = new Vue({
     },
   },
   mounted() {
-    instance.get('/getCourses').then(res=>{
-        trainingVm.allCourses=res.data["msg"]
-      })
-    instance.get("/teacher/viewAllSelectedStudents").then(res=>{
-      trainingVm.selectedStudents=res.data["msg"]})
+    instance.get("/getCourses").then((res) => {
+      trainingVm.allCourses = res.data["msg"];
+    });
+    instance.get("/teacher/viewAllSelectedStudents").then((res) => {
+      trainingVm.selectedStudents = res.data["msg"];
+    });
   },
 });

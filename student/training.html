@@ -91,10 +91,32 @@
 
       <div class="view-courses">
         <h3>所有实训</h3>
+        <div style="width: 90%; margin-left: 5%;">
+          <el-input
+            placeholder="请输入内容"
+            v-model="searchCourse"
+            class="input-with-select"
+          >
+            <el-select
+              v-model="select"
+              slot="prepend"
+              placeholder="请选择"
+              style="width: 100px;"
+            >
+              <el-option label="实训名" value="name"></el-option>
+              <el-option label="实训ID" value="id"></el-option>
+            </el-select>
+            <el-button
+              slot="append"
+              icon="el-icon-search"
+              @click="findCourse"
+            ></el-button>
+          </el-input>
+        </div>
         <div>
           <el-table
             ref="multipleTable"
-            :data="allCourses"
+            :data="courses"
             border
             stripe
             style="width: 90%; margin-left: 5%;"
@@ -133,18 +155,21 @@
               prop="already_select"
               label="已选人数"
             ></el-table-column>
-            
+
             <el-table-column label="操作">
               <template slot-scope="props">
-              <el-button @click="selectCourse(props.row.id)"
-                >选课</el-button
-              ></template></el-table-column
+                <el-button @click="selectCourse(props.row.id)"
+                  >选课</el-button
+                ></template
+              ></el-table-column
             >
           </el-table>
 
           <el-pagination
+            background
             layout="prev, pager, next"
-            style="text-align: center;"
+            style="text-align: center; margin-top: 20px;"
+            :current-page.sync="currentPage"
             :total="allCourses.length"
           >
           </el-pagination>

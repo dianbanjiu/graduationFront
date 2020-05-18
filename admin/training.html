@@ -165,7 +165,7 @@
               <el-table
                 ref="multipleTable"
                 @selection-change="handleSelectionChange"
-                :data="msg"
+                :data="courses"
                 border
                 stripe
                 style="width: 100%;"
@@ -207,8 +207,10 @@
           </div>
         </div>
         <el-pagination
+          background
+          :current-page.sync="currentPage"
           layout="prev, pager, next"
-          style="text-align: center;"
+          style="text-align: center; margin-top: 20px;"
           :total="msg.length"
         >
         </el-pagination>

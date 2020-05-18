@@ -5,9 +5,11 @@ const publicationVm = new Vue({
     return {
       msg: [],
       navIndex: "",
-      dialogVisible:false,
-      publicationForm:{},
-      evaluation:""
+      dialogVisible: false,
+      publicationForm: {},
+      evaluation: "",
+      currentPage: 1,
+      publications: [],
     };
   },
   methods: {
@@ -36,79 +38,99 @@ const publicationVm = new Vue({
           break;
       }
     },
-    deletePublication(id){
-      publicationVm.$confirm('是否删除评价', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        instance.post('/teacher/deleteEvaluation',{
-          "id":id
-      }).then(()=>{
-          publicationVm.$message({
-              message:'删除成功',
-              type:'success'
-          })
-          setTimeout(()=>{
-              window.location.reload()
-          },1000)
-      }).catch(()=>{
-          publicationVm.$message({
-              message:'删除失败',
-              type:'error'
-          })
-      })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        });          
-      });
-        
+    deletePublication(id) {
+      publicationVm
+        .$confirm("是否删除评价", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
+        .then(() => {
+          instance
+            .post("/teacher/deleteEvaluation", {
+              id: id,
+            })
+            .then(() => {
+              publicationVm.$message({
+                message: "删除成功",
+                type: "success",
+              });
+              setTimeout(() => {
+                window.location.reload();
+              }, 1000);
+            })
+            .catch(() => {
+              publicationVm.$message({
+                message: "删除失败",
+                type: "error",
+              });
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
     handleClose(done) {
-        this.$confirm('确认关闭？')
-          .then(_ => {
-            done();
-          })
-          .catch(_ => {});
-      },
-      ap(row){
-        publicationVm.dialogVisible=true
-        publicationVm.publicationForm=row
-      },
-      addEvaluation(id){
-         publicationVm.dialogVisible = false
-         if (publicationVm.publicationForm.score===undefined&&publicationVm.publicationForm.content===undefined){
-             publicationVm.$message({
-                 message:'请填写评分和评价后再提交',
-                 type:'warning'
-             })
-             return
-         }
-         instance.post('/teacher/evaluationAndScore',{
-             "id":id,
-             "teacher_score":publicationVm.publicationForm.score,
-             "teacher_evaluation":publicationVm.publicationForm.teacher_evaluation
-         }).then(()=>{
-            publicationVm.$message({
-                message:'评价成功',
-                type:'success'
-            })
-            setTimeout(()=>{
-                window.location.reload()
-            },1000)
-         }).catch(()=>{
-            publicationVm.$message({
-                message:'评分失败',
-                type:'error'
-            })
-         })
+      this.$confirm("确认关闭？")
+        .then((_) => {
+          done();
+        })
+        .catch((_) => {});
+    },
+    ap(row) {
+      publicationVm.dialogVisible = true;
+      publicationVm.publicationForm = row;
+    },
+    addEvaluation(id) {
+      publicationVm.dialogVisible = false;
+      if (
+        publicationVm.publicationForm.score === undefined &&
+        publicationVm.publicationForm.content === undefined
+      ) {
+        publicationVm.$message({
+          message: "请填写评分和评价后再提交",
+          type: "warning",
+        });
+        return;
       }
+      instance
+        .post("/teacher/evaluationAndScore", {
+          id: id,
+          teacher_score: publicationVm.publicationForm.score,
+          teacher_evaluation: publicationVm.publicationForm.teacher_evaluation,
+        })
+        .then(() => {
+          publicationVm.$message({
+            message: "评价成功",
+            type: "success",
+          });
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        })
+        .catch(() => {
+          publicationVm.$message({
+            message: "评分失败",
+            type: "error",
+          });
+        });
+    },
   },
   mounted() {
-      instance.get('/teacher/viewAllPublications').then(res=>{
-          publicationVm.msg = res.data["msg"]
-      })
+    instance.get("/teacher/viewAllPublications").then((res) => {
+      publicationVm.msg = res.data["msg"];
+      publicationVm.publications = publicationVm.msg.slice(0, 10);
+    });
+  },
+  watch: {
+    currentPage(val) {
+      publicationVm.publications = publicationVm.msg.slice(
+        10 * (val - 1),
+        10 * val
+      );
+    },
   },
 });

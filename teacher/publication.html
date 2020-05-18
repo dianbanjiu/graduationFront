@@ -48,7 +48,7 @@
 
         <template>
           <el-table
-            :data="msg"
+            :data="publications"
             border
             stripe
             style="width: 100%;"
@@ -136,9 +136,11 @@
           </span>
         </el-dialog>
         <el-pagination
+          background
+          :current-page.sync="currentPage"
           layout="prev, pager, next"
           :total="msg.length"
-          style="text-align: center;"
+          style="text-align: center; margin-top: 20px;"
         >
         </el-pagination>
       </el-card>
