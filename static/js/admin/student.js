@@ -100,7 +100,22 @@ const studentVm = new Vue({
         studentVm.dialogVisible = true;
       }
     },
+    hideAdd(){
+      studentVm.adduservisible = {display: "none"}
+    },
     pushuser() {
+      if (studentVm.userone.id==undefined||studentVm.userone.name==undefined
+        ||studentVm.userone.phone==undefined||
+        studentVm.userone.phone.length!=11||
+        studentVm.userone.school==undefined||
+        studentVm.userone.profession==undefined||
+        studentVm.userone.gender==undefined){
+        studentVm.$message({
+          message: "添加失败，请检查用户信息",
+          type: "error",
+        });
+        return
+      }
       studentVm.userone.identify = studentVm.msg[0].identify;
       instance
         .post("/admin/addUser", {

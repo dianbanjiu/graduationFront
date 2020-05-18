@@ -102,7 +102,22 @@ const teacherVm = new Vue({
         teacherVm.dialogVisible = true;
       }
     },
+    hideAdd(){
+      teacherVm.adduservisible = {display: "none"}
+    },
     pushuser() {
+      if (teacherVm.userone.id==undefined||teacherVm.userone.name==undefined
+        ||teacherVm.userone.phone==undefined||
+        teacherVm.userone.phone.length!=11||
+        teacherVm.userone.school==undefined||
+        teacherVm.userone.profession==undefined||
+        teacherVm.userone.gender==undefined){
+        teacherVm.$message({
+          message: "添加失败，请检查用户信息",
+          type: "error",
+        });
+        return
+      }
       teacherVm.userone.identify = teacherVm.msg[0].identify;
       instance
         .post("/admin/addUser", {

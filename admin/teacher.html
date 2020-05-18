@@ -111,8 +111,16 @@
           <el-col :span="3">
             <el-input v-model="userone.school" placeholder="单位"></el-input>
           </el-col>
-          <el-col :span="3">
+          <el-col :span="2">
             <el-button @click="pushuser" type="primary">添加教师</el-button>
+          </el-col>
+          <el-col :span="2">
+            <el-button
+              type="danger"
+              icon="el-icon-close"
+              style="float: right;"
+              @click="hideAdd"
+            ></el-button>
           </el-col>
         </el-row>
         <div>
