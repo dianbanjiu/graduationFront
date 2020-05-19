@@ -8,7 +8,7 @@ var publicationVm = new Vue({
       dialogVisible: false,
       newPublication: "",
       show: true,
-      html: false,
+      html: true,
       breaks: true,
       linkify: false,
       emoji: true,
