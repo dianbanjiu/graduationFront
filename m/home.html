@@ -43,7 +43,7 @@
         <div class="board-card">
           <el-card
             shadow="always"
-            v-for="item in msg"
+            v-for="item in publications"
             :key="item"
             style="margin-bottom: 10px;"
           >
@@ -53,7 +53,7 @@
               >
             </div>
             <div>
-              <p style="font-size: 15px;">{{item.content}}</p>
+              <vue-markdown>{{item.content}}</vue-markdown>
             </div>
             <div>
               <el-collapse>
@@ -73,6 +73,8 @@
         <el-pagination
           layout="prev, pager, next"
           :total="msg.length"
+          background
+          :current-page.sync="currentPage"
           style="text-align: center;"
         >
         </el-pagination>
@@ -83,6 +85,7 @@
     <script src="/static/element-ui/index.js"></script>
     <script src="/static/js/axios.min.js"></script>
     <script src="/route.js"></script>
+    <script src="/static/js/vue-markdown.js"></script>
     <script src="./js/home.js"></script>
   </body>
 </html>

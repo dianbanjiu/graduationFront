@@ -1,9 +1,17 @@
+Vue.use(VueMarkdown);
 const vm = new Vue({
     el:"#app",
     data(){
         return{
             activeIndex:'',
-            newPost:''
+            newPost:'',
+            show: true,
+      html: false,
+      breaks: true,
+      linkify: false,
+      emoji: true,
+      typographer: true,
+      toc: false,
         }
     },
     methods:{
@@ -37,7 +45,7 @@ const vm = new Vue({
                     type:'success'
                   })
                   setTimeout(()=>{
-                    window.location.href = "http://" + window.location.host + "/home.html";
+                    window.location.href = "http://" + window.location.host + "/m/home.html";
                   },1000)
                 }).catch(()=>{
                   publicationVm.$message({

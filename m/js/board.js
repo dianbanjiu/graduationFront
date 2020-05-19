@@ -28,6 +28,15 @@ const vm = new Vue({
   mounted() {
     instance.get('/getBoards').then(res=>{
       vm.msg=res.data["msg"]
+      if (vm.msg.length != 0) {
+        for (var i = 0; i < vm.msg.length; i++) {
+          if (vm.msg[i].create_identify == "teacher") {
+            vm.msg[i].create_identify = "教师公告";
+          } else if (vm.msg[i].create_identify == "admin") {
+            vm.msg[i].create_identify = "系统公告";
+          }
+        }
+      }
   })
   },
 });

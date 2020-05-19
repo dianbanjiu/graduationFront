@@ -25,7 +25,7 @@
         active-text-color="#ffd04b"
         style="text-align: center;"
       >
-      <el-menu-item index="0" style="width: 25%;"
+        <el-menu-item index="0" style="width: 25%;"
           ><i class="el-icon-message-solid"></i>公告</el-menu-item
         >
         <el-menu-item index="1" style="width: 25%;"
@@ -38,23 +38,47 @@
           ><i class="el-icon-s-tools"></i>更多</el-menu-item
         >
       </el-menu>
-      
-      
-      <el-form style="margin-top: 20px;background-color: white;">
+
+      <el-form style="margin-top: 20px; background-color: white;">
         <el-form-item>
-          <el-input type="textarea" placeholder="在此处添加周报内容" :autosize="{ minRows: 4}" v-model="newPost"></el-input>
+          <el-input
+            type="textarea"
+            placeholder="在此处添加周报内容,支持Markdown语法"
+            :autosize="{ minRows: 4}"
+            v-model="newPost"
+          ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="danger" style="margin-left: 10px;" @click="clear">重置</el-button>
-          <el-button type="primary" style="float: right; margin-right: 10px;" @click="addNewPost">发布</el-button>
+          <el-button type="danger" style="margin-left: 10px;" @click="clear"
+            >重置</el-button
+          >
+          <el-button
+            type="primary"
+            style="float: right; margin-right: 10px;"
+            @click="addNewPost"
+            >发布</el-button
+          >
         </el-form-item>
       </el-form>
+      <vue-markdown
+          :watches="['show','html','breaks','linkify','emoji','typographer','toc']"
+          :source="newPost"
+          :show="show"
+          :html="html"
+          :breaks="breaks"
+          :linkify="linkify"
+          :emoji="emoji"
+          :typographer="typographer"
+          :toc="toc"
+          toc-id="toc"
+        ></vue-markdown>
     </div>
 
     <script src="/static/js/vue.min.js"></script>
     <script src="/static/element-ui/index.js"></script>
     <script src="/static/js/axios.min.js"></script>
     <script src="/route.js"></script>
+    <script src="/static/js/vue-markdown.js"></script>
     <script src="./js/create.js"></script>
   </body>
 </html>
