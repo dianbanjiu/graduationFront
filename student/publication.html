@@ -18,7 +18,7 @@
   </head>
 
   <body>
-    <div id="app">
+    <div id="app" v-clock>
       <el-menu
         :default-active="navIndex"
         class="el-menu-nav"
@@ -104,7 +104,7 @@
         <div class="board-card">
           <el-card
             shadow="always"
-            v-for="item in msg"
+            v-for="item in publications"
             :key="item"
             style="margin-bottom: 10px;"
           >
@@ -133,6 +133,8 @@
         </div>
         <el-pagination
           layout="prev, pager, next"
+          background
+          :current-page.sync="currentPage"
           :total="msg.length"
           style="text-align: center;"
         >

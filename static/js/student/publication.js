@@ -14,6 +14,8 @@ var publicationVm = new Vue({
       emoji: true,
       typographer: true,
       toc: false,
+      currentPage: 1,
+      publications: [],
     };
   },
   methods: {
@@ -80,6 +82,15 @@ var publicationVm = new Vue({
   mounted() {
     instance.get("/student/viewAllPublications").then((res) => {
       publicationVm.msg = res.data["msg"];
+      publicationVm.publications = publicationVm.msg.slice(0, 10);
     });
+  },
+  watch: {
+    currentPage(val) {
+      publicationVm.publications = publicationVm.msg.slice(
+        10 * (val - 1),
+        10 * val
+      );
+    },
   },
 });
