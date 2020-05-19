@@ -10,6 +10,13 @@ const publicationVm = new Vue({
       evaluation: "",
       currentPage: 1,
       publications: [],
+      showChartDialog: false,
+      studentsList: [],
+      studentSel: "",
+      courseScoreList: {
+        columns: ["score", "times"],
+        rows: [],
+      },
     };
   },
   methods: {
@@ -124,6 +131,15 @@ const publicationVm = new Vue({
       publicationVm.msg = res.data["msg"];
       publicationVm.publications = publicationVm.msg.slice(0, 10);
     });
+    instance.get("/teacher/viewAllSelectedStudents").then((res) => {
+      selectedStudents = res.data["msg"];
+      selectedStudents.forEach((student) => {
+        publicationVm.studentsList.push({
+          value: student.id,
+          label: student.name,
+        });
+      });
+    });
   },
   watch: {
     currentPage(val) {
@@ -131,6 +147,20 @@ const publicationVm = new Vue({
         10 * (val - 1),
         10 * val
       );
+    },
+    studentSel(val) {
+      instance
+        .get("/teacher/studentScoreTimes", { params: { student_id: val } })
+        .then(function (res) {
+          publicationVm.courseScoreList.rows = new Array();
+          studentScoreList = res.data["msg"];
+          for (var studentKey in studentScoreList) {
+            publicationVm.courseScoreList.rows.push({
+              score: studentKey,
+              times: studentScoreList[studentKey],
+            });
+          }
+        });
     },
   },
 });

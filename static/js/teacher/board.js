@@ -5,7 +5,7 @@ const boardVm = new Vue({
       msg: [],
       navIndex: "",
       dialogVisible: false,
-      newBoardContent:''
+      newBoardContent: "",
     };
   },
   methods: {
@@ -34,74 +34,87 @@ const boardVm = new Vue({
           break;
       }
     },
-    addBoard(content){
-        boardVm.dialogVisible = false
-        instance.post('/teacher/addBoard',{
-            "content":content,
-        }).then(()=>{
-            boardVm.$message({
-                message:'添加成功',
-                type:'success',
-            })
-            setTimeout(()=>{
-                window.location.reload()
-            },1000)
-        }).catch(()=>{
-            boardVm.$message({
-                message:'添加失败',
-                type:'error',
-            })
-            setTimeout(()=>{
-                window.location.reload()
-            },1000)
+    addBoard(content) {
+      boardVm.dialogVisible = false;
+      instance
+        .post("/teacher/addBoard", {
+          content: content,
         })
+        .then(() => {
+          boardVm.$message({
+            message: "添加成功",
+            type: "success",
+          });
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        })
+        .catch(() => {
+          boardVm.$message({
+            message: "添加失败",
+            type: "error",
+          });
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        });
     },
-    deleteBoard(item){
-      boardVm.$confirm('此操作将永久删除该公告, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        instance.post('/teacher/deleteBoard',{
-          'id':item.id
-      }).then(()=>{
-          boardVm.$message({
-              message:'删除成功',
-              type:'success',
-          })
-          setTimeout(()=>{
-              window.location.reload()
-          },1000)
-      }).catch(()=>{
-          boardVm.$message({
-              message:'删除失败',
-              type:'error',
-          })
-          setTimeout(()=>{
-              window.location.reload()
-          },1000)
-      })
-        
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        });          
-      });
-        
+    deleteBoard(item) {
+      if (item.create_identify == "admin") {
+        boardVm.$message({
+          message: "删除失败，该公告由管理员发布",
+          type: "error",
+        });
+        return;
+      }
+      boardVm
+        .$confirm("此操作将永久删除该公告, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
+        .then(() => {
+          instance
+            .post("/teacher/deleteBoard", {
+              id: item.id,
+            })
+            .then(() => {
+              boardVm.$message({
+                message: "删除成功",
+                type: "success",
+              });
+              setTimeout(() => {
+                window.location.reload();
+              }, 1000);
+            })
+            .catch(() => {
+              boardVm.$message({
+                message: "删除失败",
+                type: "error",
+              });
+              setTimeout(() => {
+                window.location.reload();
+              }, 1000);
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
     handleClose(done) {
-        this.$confirm('确认关闭？')
-          .then(_ => {
-            done();
-          })
-          .catch(_ => {});
-      }
+      this.$confirm("确认关闭？")
+        .then((_) => {
+          done();
+        })
+        .catch((_) => {});
+    },
   },
-  mounted(){
-      instance.get('/getBoards').then(res=>{
-         boardVm.msg = res.data["msg"] 
-      })
-      }
-  }
-);
+  mounted() {
+    instance.get("/getBoards").then((res) => {
+      boardVm.msg = res.data["msg"];
+    });
+  },
+});
