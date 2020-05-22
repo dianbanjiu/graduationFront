@@ -17,6 +17,7 @@ const publicationVm = new Vue({
         columns: ["score", "times"],
         rows: [],
       },
+      notify:0
     };
   },
   methods: {
@@ -36,12 +37,15 @@ const publicationVm = new Vue({
         case "4":
           window.location.href = base + "/publication.html";
           break;
-        case "5-1":
+        case "5-2":
           window.location.href = base + "/userinfo.html";
           break;
-        case "5-2":
+        case "5-3":
           clearCookie();
           window.location.href = "http://" + window.location.host;
+          break;
+        case "5-1":
+          window.location.href = base + "/notification.html";
           break;
       }
     },
@@ -139,6 +143,14 @@ const publicationVm = new Vue({
           label: student.name,
         });
       });
+    });
+    instance.get("/teacher/viewAllApplyProgress").then((res) => {
+      var notifications = res.data["msg"];
+      for(var i = 0;i<notifications.length;i++){
+        if(notifications[i].teacher_status==0){
+            publicationVm.notify+=1
+        }
+      }
     });
   },
   watch: {

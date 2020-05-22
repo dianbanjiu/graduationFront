@@ -6,6 +6,7 @@ const boardVm = new Vue({
       navIndex: "",
       dialogVisible: false,
       newBoardContent: "",
+      notify: 0,
     };
   },
   methods: {
@@ -25,12 +26,15 @@ const boardVm = new Vue({
         case "4":
           window.location.href = base + "/publication.html";
           break;
-        case "5-1":
+        case "5-2":
           window.location.href = base + "/userinfo.html";
           break;
-        case "5-2":
+        case "5-3":
           clearCookie();
           window.location.href = "http://" + window.location.host;
+          break;
+        case "5-1":
+          window.location.href = base + "/notification.html";
           break;
       }
     },
@@ -115,6 +119,14 @@ const boardVm = new Vue({
   mounted() {
     instance.get("/getBoards").then((res) => {
       boardVm.msg = res.data["msg"];
+    });
+    instance.get("/teacher/viewAllApplyProgress").then((res) => {
+      var notifications = res.data["msg"];
+      for(var i = 0;i<notifications.length;i++){
+        if(notifications[i].teacher_status==0){
+            boardVm.notify+=1
+        }
+      }
     });
   },
 });

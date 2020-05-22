@@ -5,6 +5,7 @@ const infoVm = new Vue({
       msg: {},
       navIndex: "",
       disable: true,
+      notify:0
     };
   },
   methods: {
@@ -24,12 +25,15 @@ const infoVm = new Vue({
         case "4":
           window.location.href = base + "/publication.html";
           break;
-        case "5-1":
+        case "5-2":
           window.location.href = base + "/userinfo.html";
           break;
-        case "5-2":
+        case "5-3":
           clearCookie();
           window.location.href = "http://" + window.location.host;
+          break;
+        case "5-1":
+          window.location.href = base + "/notification.html";
           break;
       }
     },
@@ -85,6 +89,14 @@ const infoVm = new Vue({
     instance.get("getUserInfo").then((res) => {
       infoVm.msg = res.data["msg"];
       infoVm.msg.identify = "教师";
+    });
+    instance.get("/teacher/viewAllApplyProgress").then((res) => {
+      var notifications = res.data["msg"];
+      for(var i = 0;i<notifications.length;i++){
+        if(notifications[i].teacher_status==0){
+            infoVm.notify+=1
+        }
+      }
     });
   },
 });

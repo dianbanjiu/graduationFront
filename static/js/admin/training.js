@@ -15,6 +15,7 @@ const courseVm = new Vue({
       getHeader: { Authorization: "Bearer " + getCookie("token") },
       currentPage: 1,
       courses: [],
+      notify: 0,
     };
   },
   methods: {
@@ -37,12 +38,15 @@ const courseVm = new Vue({
         case "5":
           window.location.href = base + "/student.html";
           break;
-        case "6-1":
+        case "6-2":
           window.location.href = base + "/userinfo.html";
           break;
-        case "6-2":
+        case "6-3":
           clearCookie();
           window.location.href = "http://" + window.location.host;
+          break;
+        case "6-1":
+          window.location.href = base + "/notification.html";
           break;
       }
     },
@@ -143,6 +147,14 @@ const courseVm = new Vue({
     instance.get("/getCourses").then((res) => {
       courseVm.msg = res.data["msg"];
       courseVm.courses = courseVm.msg.slice(0, 10);
+    });
+    instance.get("/admin/viewAllApplyProgress").then((res) => {
+      var notifications = res.data["msg"];
+      for (var i = 0; i < notifications.length; i++) {
+        if (notifications[i].teacher_status == 0) {
+          courseVm.notify += 1;
+        }
+      }
     });
   },
   watch: {

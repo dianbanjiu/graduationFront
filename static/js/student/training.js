@@ -1,3 +1,7 @@
+const status = new Map();
+status.set("0", "等待审核");
+status.set("1", "审核通过");
+status.set("2", "审核失败");
 var boardVm = new Vue({
   el: "#app",
   data() {
@@ -9,6 +13,23 @@ var boardVm = new Vue({
       currentPage: 1,
       searchCourse: "",
       select: "",
+      applyCourseDialogVisible: false,
+      applyCourseForm: {
+        id: "",
+        course_name: "",
+        address: "",
+        desc: "",
+        company: "",
+        student_name: "",
+        student_id: "",
+        mentor_id: "",
+        mentor_name: "",
+        teacher_status: "",
+        admin_status: "",
+      },
+      teacherStatus: "",
+      adminStatus: "",
+      disabled: false,
     };
   },
   methods: {
@@ -128,6 +149,32 @@ var boardVm = new Vue({
           });
       }
     },
+    applyCourse() {
+      instance
+        .post("/student/applyCourse", {
+          course_name: boardVm.applyCourseForm.course_name,
+          address: boardVm.applyCourseForm.address,
+          desc: boardVm.applyCourseForm.desc,
+          company: boardVm.applyCourseForm.company,
+          mentor_id: boardVm.applyCourseForm.mentor_id,
+          mentor_name: boardVm.applyCourseForm.mentor_name,
+        })
+        .then((res) => {
+          boardVm.$message({
+            message: "提交成功",
+            type: "success"
+          });
+          setTimeout(function(){
+            window.location.reload()
+          },1000)
+        })
+        .catch((err) => {
+          boardVm.$message({
+            message: "您是否有未退的课程或者检查你填写的表项是否正确",
+            type: "error",
+          });
+        });
+    },
   },
   mounted() {
     instance.get("/student/alreadySelectedCourse").then((res) => {
@@ -136,6 +183,19 @@ var boardVm = new Vue({
     instance.get("/getCourses").then((res) => {
       boardVm.allCourses = res.data["msg"];
       boardVm.courses = boardVm.allCourses.slice(0, 10);
+    });
+    instance.get("/student/viewApplyProgress").then((res) => {
+      if (res.status == 204) {
+        return;
+      }
+      boardVm.applyCourseForm = res.data["msg"];
+      if (res.data["msg"].id.length != 0) {
+        boardVm.disabled = true;
+      }
+      boardVm.teacherStatus = status.get(
+        boardVm.applyCourseForm.teacher_status
+      );
+      boardVm.adminStatus = status.get(boardVm.applyCourseForm.admin_status);
     });
   },
   watch: {

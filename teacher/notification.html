@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>实训管理系统</title>
+    <link rel="stylesheet" href="/static/element-ui/index.css" />
+    <link
+      rel="shortcut icon"
+      href="/static/img/favicon.ico"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="/static/css/teacher/notifition.css" />
+  </head>
+
+  <body>
+    <div id="app" v-cloak>
+      <el-menu
+        :default-active="navIndex"
+        class="el-menu-nav"
+        mode="horizontal"
+        @select="navSelect"
+        background-color="#342ead"
+        text-color="#fff"
+        active-text-color="#ffd04b"
+      >
+        <el-menu-item class="logo-title" index="1">实训管理系统</el-menu-item>
+        <el-menu-item class="nav" style="margin-left: 200px;" index="2"
+          >公告</el-menu-item
+        >
+        <el-menu-item class="nav" index="3">实训管理</el-menu-item>
+        <el-menu-item class="nav" index="4">周报管理</el-menu-item>
+        <el-submenu class="logout-userinfo" index="5">
+          <template slot="title"><i class="el-icon-user"></i> 欢迎您</template>
+          <el-menu-item index="5-1">个人信息</el-menu-item>
+          <el-menu-item index="5-2">退出</el-menu-item>
+        </el-submenu>
+      </el-menu>
+
+      <el-card
+        class="box-card"
+        style="margin-left: 10%; width: 80%; margin-top: 50px;"
+      >
+        <div slot="header" class="clearfix">
+          <span style="font-size: 30px;">实训申请通知</span>
+        </div>
+        <el-button style="float: right;margin-right: 5px;" round type="success" @click="alreadyNotifyButton"
+          >已处理</el-button
+        >
+        <el-button style="float: right;margin-right: 5px;" round type="info" @click="notNotifyButton">未处理</el-button>
+        <el-button style="float: right;margin-right: 5px;" round @click="allNotifyButton">全部</el-button>
+
+
+        <template>
+          <el-table :data="courses" style="width: 100%;">
+            <el-table-column type="expand">
+              <template slot-scope="props">
+                <el-form label-position="left" inline class="demo-table-expand">
+                  <el-form-item label="申请编号：">
+                    <span>{{ props.row.id }}</span>
+                  </el-form-item>
+                  <el-form-item label="实训名：">
+                    <span>{{ props.row.course_name }}</span>
+                  </el-form-item>
+                  <el-form-item label="实训公司：">
+                    <span>{{ props.row.company }}</span>
+                  </el-form-item>
+                  <el-form-item label="实训地址：">
+                    <span>{{ props.row.address }}</span>
+                  </el-form-item>
+                  <el-form-item label="实训描述：">
+                    <span>{{ props.row.desc }}</span>
+                  </el-form-item>
+                  <el-form-item label="指导教师工号：">
+                    <span>{{ props.row.mentor_id }}</span>
+                  </el-form-item>
+                  <el-form-item label="指导教师姓名：">
+                    <span>{{ props.row.mentor_name }}</span>
+                  </el-form-item>
+                </el-form>
+              </template>
+            </el-table-column>
+            <el-table-column label="学生学号" prop="student_id">
+            </el-table-column>
+            <el-table-column label="学生姓名" prop="student_name">
+            </el-table-column>
+            <el-table-column label="申请实训" prop="course_name">
+            </el-table-column>
+            <el-table-column label="教师处理" prop="teacher_status">
+            </el-table-column>
+            <el-table-column label="管理员处理" prop="admin_status">
+            </el-table-column>
+            <el-table-column label="操作">
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  :disabled="disabled"
+                  @click="setId(scope.$index,scope.row.id)"
+                  >编辑</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+        </template>
+      </el-card>
+      <el-dialog title="审核" :visible.sync="dialogVisible" width="15%">
+        <template>
+          <el-select v-model="tStatus" placeholder="请选择">
+            <el-option
+              v-for="item in statuses"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </template>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="handleEdit">确 定</el-button>
+        </span>
+      </el-dialog>
+    </div>
+    <script src="/static/js/vue.min.js"></script>
+    <script src="/static/element-ui/index.js"></script>
+    <script src="/static/js/axios.min.js"></script>
+    <script src="/route.js"></script>
+    <script src="/static/js/teacher/notification.js"></script>
+  </body>
+</html>

@@ -37,8 +37,13 @@
         <el-menu-item class="nav" index="5">学生管理</el-menu-item>
         <el-submenu class="logout-userinfo" index="6">
           <template slot="title"><i class="el-icon-user"></i> 欢迎您</template>
-          <el-menu-item index="6-1">个人信息</el-menu-item>
-          <el-menu-item index="6-2">退出</el-menu-item>
+          <el-menu-item index="6-1">
+            <el-badge :value="notify" class="item">
+              周报申请处理
+            </el-badge>
+          </el-menu-item>
+          <el-menu-item index="6-2">个人信息</el-menu-item>
+          <el-menu-item index="6-3">退出</el-menu-item>
         </el-submenu>
       </el-menu>
       <el-card class="teachers-cards">

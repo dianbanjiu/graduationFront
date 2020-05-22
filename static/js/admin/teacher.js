@@ -13,6 +13,7 @@ const teacherVm = new Vue({
       getHeader: { Authorization: "Bearer " + getCookie("token") },
       currentPage: 1,
       teachers: [],
+      notify: 0,
     };
   },
   methods: {
@@ -35,12 +36,15 @@ const teacherVm = new Vue({
         case "5":
           window.location.href = base + "/student.html";
           break;
-        case "6-1":
+        case "6-2":
           window.location.href = base + "/userinfo.html";
           break;
-        case "6-2":
+        case "6-3":
           clearCookie();
           window.location.href = "http://" + window.location.host;
+          break;
+        case "6-1":
+          window.location.href = base + "/notification.html";
           break;
       }
     },
@@ -102,21 +106,24 @@ const teacherVm = new Vue({
         teacherVm.dialogVisible = true;
       }
     },
-    hideAdd(){
-      teacherVm.adduservisible = {display: "none"}
+    hideAdd() {
+      teacherVm.adduservisible = { display: "none" };
     },
     pushuser() {
-      if (teacherVm.userone.id==undefined||teacherVm.userone.name==undefined
-        ||teacherVm.userone.phone==undefined||
-        teacherVm.userone.phone.length!=11||
-        teacherVm.userone.school==undefined||
-        teacherVm.userone.profession==undefined||
-        teacherVm.userone.gender==undefined){
+      if (
+        teacherVm.userone.id == undefined ||
+        teacherVm.userone.name == undefined ||
+        teacherVm.userone.phone == undefined ||
+        teacherVm.userone.phone.length != 11 ||
+        teacherVm.userone.school == undefined ||
+        teacherVm.userone.profession == undefined ||
+        teacherVm.userone.gender == undefined
+      ) {
         teacherVm.$message({
           message: "添加失败，请检查用户信息",
           type: "error",
         });
-        return
+        return;
       }
       teacherVm.userone.identify = teacherVm.msg[0].identify;
       instance
@@ -163,6 +170,14 @@ const teacherVm = new Vue({
         teacherVm.msg = res.data["msg"];
         teacherVm.teachers = teacherVm.msg.slice(0, 10);
       });
+    instance.get("/admin/viewAllApplyProgress").then((res) => {
+      var notifications = res.data["msg"];
+      for (var i = 0; i < notifications.length; i++) {
+        if (notifications[i].teacher_status == 0) {
+          teacherVm.notify += 1;
+        }
+      }
+    });
   },
   watch: {
     currentPage(val) {

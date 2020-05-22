@@ -37,8 +37,13 @@
         <el-menu-item class="nav" index="4">周报管理</el-menu-item>
         <el-submenu class="logout-userinfo" index="5">
           <template slot="title"><i class="el-icon-user"></i> 欢迎您</template>
-          <el-menu-item index="5-1">个人信息</el-menu-item>
-          <el-menu-item index="5-2">退出</el-menu-item>
+          <el-menu-item index="5-1">
+            <el-badge :value="notify" class="item">
+              周报申请处理
+            </el-badge>
+          </el-menu-item>
+          <el-menu-item index="5-2">个人信息</el-menu-item>
+          <el-menu-item index="5-3">退出</el-menu-item>
         </el-submenu>
       </el-menu>
 
